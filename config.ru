@@ -8,5 +8,11 @@ rescue LoadError
   Bundler.setup
 end
 
+begin
+  # 'source' dev environment if present
+  require ::File.expand_path('../env.rb', __FILE__)
+rescue LoadError
+end
+
 require 'web'
 run Sinatra::Application
