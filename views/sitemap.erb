@@ -8,7 +8,7 @@
   <% elsif v.is_a? Hash and v.has_key? :set %>
     <li>
       <% if v[:set ]%>
-        <a href="<%= v[:set] %>"><%= k %></a>
+        <a href="<%= v[:set] %>" feed="<%= feed(v[:set]) %>"><%= k %></a>
       <% else %>
         <%= k %>
       <% end %>
