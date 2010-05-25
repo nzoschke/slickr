@@ -1,0 +1,22 @@
+<ul>
+<% @map.each do |k,v| %>
+  <% if v.is_a? BSON::OrderedHash %>
+    <li>
+      <%= k %>
+      <%= @map = v ; erb(:sitemap, :layout => false) %>
+    </li>
+  <% elsif v.is_a? Hash and v.has_key? :feed %>
+    <li>
+      <% if v[:feed ]%>
+        <a href="<%= v[:feed] %>"><%= k %></a>
+      <% else %>
+        <%= k %>
+      <% end %>
+    </li>
+  <% else %>
+    <li>
+      <a href="<%= v %>"><%= k %></a>
+    </li>
+  <% end %>
+<% end %>
+</ul>

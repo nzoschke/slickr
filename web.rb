@@ -1,7 +1,8 @@
 require 'sinatra'
+require 'erb'
 
 get '/' do
-  "Hello World!"
+  erb :index
 end
 
 helpers do

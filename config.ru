@@ -8,6 +8,8 @@ rescue LoadError
   Bundler.setup
 end
 
+require 'bson'
+
 begin
   # 'source' dev environment if present
   require ::File.expand_path('../env.rb', __FILE__)

@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title><%= SITE['title'] %></title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
+    <link rel="stylesheet" href="/main.css" type="text/css">
+  </head>
+  <body>
+    <div id="doc" class="yui-t4">
+
+      <div id="hd" role="banner">
+        <h1 id="logo"><a href="/"><%= SITE['header'] %></a></h1>
+      </div>
+
+      <div id="bd" role="main">
+    	  <div id="yui-main">
+    	    <div class="yui-b">
+    	      <div class="yui-g">
+      	      <!-- YOUR DATA GOES HERE -->
+      	      <div id="photowrap">
+      	        <div id="photo">
+    	            <img src="http://farm4.static.flickr.com/3110/3236761506_a0f860d7c7.jpg" />
+    	          </div>
+    	        </div>
+    	      </div>
+    	    </div>
+    	  </div>
+
+    	  <div class="yui-b">
+    	    <!-- YOUR NAVIGATION GOES HERE -->
+    	    <%= @map = SITEMAP ; erb(:sitemap, :layout => false) %>
+    	  </div>
+    	</div>
+    	
+      <div id="ft" role="contentinfo"><p>Footer</p></div>
+      
+    </div>
+  </body>
+</html>
