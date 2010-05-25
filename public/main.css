@@ -1,5 +1,13 @@
-li { margin-left: 20px; }
+.nav li { margin-left: 20px; }
 
 #logo { font-size: 28px; }
-#photo-wrap, #photo { width: 500px; height: 500px; margin-left: auto; margin-right: auto; text-align: center; }
+
+#gallery { width: 100%; text-align: center; }
+#photowrap, #photo { width: 500px; height: 500px; margin-left: auto; margin-right: auto; text-align: center; }
 #photo { display: table-cell; vertical-align: middle; }
+
+#thumbnails { margin: 10px auto; width:	540px; overflow: hidden; text-align: center; }
+#thumbnails ul { list-style: none; float: left; padding: 0px; margin: 0px; }
+#thumbnails ul li { display: inline; }
+#thumbnails ul li img { border:	none; padding: 2px 2px; width: 50px; height: 50px; }
+#thumbnails ul li img:hover { cursor: pointer; }

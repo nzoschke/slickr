@@ -20,12 +20,17 @@
     	    <div class="yui-b">
     	      <div class="yui-g">
       	      <!-- YOUR DATA GOES HERE -->
-      	      <div id="photowrap">
-      	        <div id="photo">
-    	            <img src="http://farm4.static.flickr.com/3110/3236761506_a0f860d7c7.jpg" />
-    	          </div>
-    	        </div>
-    	        <div id="thumbnails"></div>
+      	      <div id="gallery">
+        	      <div id="photowrap">
+        	        <div id="photo">
+        	          <% if SITEMAP %>
+        	          <% else %>
+        	            <img src="http://farm4.static.flickr.com/3110/3236761506_a0f860d7c7.jpg" />
+        	          <% end %>
+        	        </div>
+      	        </div>
+      	        <div id="thumbnails"></div>
+      	      </div>
     	      </div>
     	    </div>
     	  </div>
