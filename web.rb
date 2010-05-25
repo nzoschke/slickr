@@ -1,9 +1,4 @@
 require 'sinatra'
-require 'erb'
-require 'uri'
-require 'net/http'
-require 'RMagick'
-require 'mongo'
 
 get '/' do
   erb :index
