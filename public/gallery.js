@@ -3,28 +3,26 @@ $(document).ready(function() {
 });
 
 $('a[feed]').live('click', function(e) {
-  loadFeed($(e.currentTarget).attr('feed'));
+  $.getJSON($(e.currentTarget).attr('feed'), function(data) {
+    var thumbs = "<ul>";
+    $.each(data.items, function(i,item) {
+      var thumb_url = (item.media.m).replace("_m.jpg", "_s.jpg"); // 75x75 square
+      thumbs += '<li><img class="thumb" src="' + thumb_url + '" alt="' + item.title + '" title="' + item.title + '"/></li>';
+    });
+    thumbs += "</ul>";
+
+    $('#thumbnails').html(thumbs + "</ul>");
+    $('img.thumb').first().trigger('click'); // select first thumb    
+  });
   return false;
 });
 
-function loadFeed(url) {
-  $.getJSON(url, displayFeed);
+$('img.thumb').live('click', function(e) {
+  // toggle selection
+  $('img.thumb').removeClass('selected');
+  $(e.currentTarget).addClass('selected');
+
+  var photo_url = $(e.currentTarget).attr('src').replace("_s.jpg", ".jpg"); // 500x500 max
+  $('#photo').html('<img id="jpg" src="' + photo_url + '"/>');
   return false;
-};
-
-function displayFeed(data) {
-  var thumbs = "<ul>";
-  $.each(data.items, function(i,item) {
-    // thumbnail src is proxied through ThumbnailHandler
-    //var thumb_url = '/thumbnails/?key_name=' + (item.media.m).replace("_m.jpg", ".jpg");
-    //if (isAdmin()) thumb_url += '&nc=' + new Date().getTime();
-    var thumb_url = (item.media.m).replace("_m.jpg", "_s.jpg"); // 75x75 square
-    thumbs += '<li>';
-    thumbs += '<img class="thumb" src="' + thumb_url + '" alt="' + item.title + '" title="' + item.title + '"/>';
-    thumbs += '</li>';
-  });
-  thumbs += "</ul>";
-
-  $('#thumbnails').html(thumbs + "</ul>");
-  $('img.thumb').first().trigger('click'); // select first thumb
-}
+});
