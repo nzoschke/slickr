@@ -43,6 +43,6 @@ function updateResizable(status) {
 };
 
 function closeResizable(e) {
-  $('img.thumb.selected').attr('src', $('img.thumb.selected').attr('src') + '&t=' + new Date().getTime()); // trigger reload
+  $('img.thumb.selected').attr('src', $('img.thumb.selected').attr('src') + '&t=' + new Date().getTime()); // bypass cache
   $('#close').trigger('click');
 };

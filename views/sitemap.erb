@@ -5,10 +5,10 @@
       <%= k %>
       <%= @map = v ; erb(:sitemap, :layout => false) %>
     </li>
-  <% elsif v.is_a? Hash and v.has_key? :set %>
+  <% elsif v.is_a? Hash and v.has_key? :set_url %>
     <li>
-      <% if v[:set ]%>
-        <a href="<%= v[:set] %>" feed="<%= feed(v[:set]) %>"><%= k %></a>
+      <% if v[:set_url]%>
+        <a href="<%= v[:set_url] %>" feed="<%= feed_url(v[:set_url]) %>"><%= k %></a>
       <% else %>
         <%= k %>
       <% end %>
