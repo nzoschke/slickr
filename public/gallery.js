@@ -1,9 +1,15 @@
-$(document).ready(function() {
-  $('a[feed]').first().trigger('click'); // select first feed
-});
+$(document).bind('ready', selectGallery);
+$(window).bind('hashchange', selectGallery);
+
+function selectGallery(e) {
+  var gallery_num = document.location.hash.match(/[0-9]+/) || 0
+  $('a[feed]').eq(gallery_num).trigger('click');
+};
 
 $('a[feed]').live('click', function(e) {
   e.preventDefault();
+  
+  document.location.hash = '#' + $('a[feed]').index(e.target);
   
   $.getJSON($(e.currentTarget).attr('feed'), function(data) {
     var thumbs = "<ul>";
