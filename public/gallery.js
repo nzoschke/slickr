@@ -7,7 +7,7 @@ $('a[feed]').live('click', function(e) {
     var thumbs = "<ul>";
     $.each(data.items, function(i,item) {
       var thumb_url = (item.media.m).replace("_m.jpg", "_s.jpg"); // 75x75 square
-      thumbs += '<li><img class="thumb" src="/thumb?' + 't=' + new Date().getTime() + '&url=' + thumb_url + '" alt="' + item.title + '" title="' + item.title + '"/></li>';
+      thumbs += '<li><img class="thumb" src="/thumb?url=' + thumb_url + '" alt="' + item.title + '" title="' + item.title + '"/></li>';
     });
     thumbs += "</ul>";
 
@@ -31,32 +31,49 @@ $('img.thumb').live('click', function(e) {
 
 $('#photo').live('mousedown', function(e) {
   $('#close').trigger('click');
-  $('#photowrap').append('<div id="resizable" class="ui-widget-content"><a id="save" href="#">save</a><a id="close" href="#" style="margin-left: 2px; float: left;">x</a></div>');
+  $('#photowrap').append('<div id="resizable" class="ui-widget-content"><a id="save" href="#">save</a><a id="close" href="#">x</a><a id="reset" href="#">reset</a></div>');
   $("#resizable").resizable({ aspectRatio: 1/1, minWidth: 75, minHeight: 75, containment: 'parent' });
   $("#resizable").draggable({ containment: '#jpg', cursor: 'move' });
-  $("#resizable").css({ position: 'absolute', left: e.layerX - 75, top: e.layerY - 75, width: 150, height: 150, opacity: 0.65, cursor: 'move', border: '1px solid #0080FF' });
+  $("#resizable").css({ position: 'absolute', left: e.layerX - 75, top: e.layerY - 75, width: 150, height: 150 });
 });
 
 $('#save').live('click', function(e) {
-  $("#save").remove(); // prevent clicking again
-  $("#close").html('');
-  $("#resizable").append('<i>saving...</i>');
   e.preventDefault();
+  updateResizable('saving...');
   
   $.post("/thumb", {
     photo_url: $("#jpg").attr('src'),
     x: $("#resizable").attr('offsetLeft') - $("#jpg").attr('offsetLeft'),
     y: $("#resizable").attr('offsetTop')  - $("#jpg").attr('offsetTop'),
     width: $("#resizable").attr('clientWidth')
-  }, function (e) {
-    $('img.thumb.selected').attr('src', $('img.thumb.selected').attr('src') + '&t=' + new Date().getTime()); // trigger reload
-    $('#close').trigger('click');
-  });
+  }, closeResizable);
+});
+
+$('#reset').live('click', function(e) {
+  e.preventDefault();
+  updateResizable('resetting...');
+
+  $.post("/thumb", {
+    _method: 'delete',
+    photo_url: $("#jpg").attr('src'),
+  }, closeResizable);
 });
 
 $('#close').live('click', function(e) {
+  e.preventDefault()
   if (!$("#resizable")) return;
   $("#resizable").resizable('destroy').draggable('destroy');  
   $("#resizable").remove();
-  e.preventDefault()
 });
+
+function updateResizable(status) {
+  $("#save").remove();
+  $("#reset").remove();
+  $("#close").html(''); // clear but save binding
+  $("#resizable").append('<i id="status">' + status + '</i>');
+};
+
+function closeResizable(e) {
+  $('img.thumb.selected').attr('src', $('img.thumb.selected').attr('src') + '&t=' + new Date().getTime()); // trigger reload
+  $('#close').trigger('click');
+};

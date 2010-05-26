@@ -24,11 +24,19 @@ end
 
 get '/thumb' do
   begin
+    expires 0, :no_cache, :must_revalidate if authorized?
     content_type "image/jpeg"
     return fs.open(params[:url], 'r').read
   rescue Mongo::GridFileNotFound
     redirect params[:url]
   end
+end
+
+delete '/thumb' do
+  photo_url = URI.extract(params[:photo_url]).first # might have /thumb?url= prepended...
+  thumb_url = photo_url.gsub(/\.jpg/, "_s.jpg")
+  fs.delete(thumb_url)
+  return 'ok'
 end
 
 helpers do
