@@ -3,7 +3,7 @@
 #logo { font-size: 28px; }
 
 #gallery { width: 100%; text-align: center; }
-#photowrap, #photo { width: 500px; height: 500px; margin-left: auto; margin-right: auto; text-align: center; }
+#photowrap, #photo { position: relative; width: 500px; height: 500px; margin-left: auto; margin-right: auto; text-align: center; }
 #photo { display: table-cell; vertical-align: middle; }
 
 #thumbnails { margin: 10px auto; width:	540px; overflow: hidden; text-align: center; }

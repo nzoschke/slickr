@@ -26,3 +26,22 @@ $('img.thumb').live('click', function(e) {
   $('#photo').html('<img id="jpg" src="' + photo_url + '"/>');
   return false;
 });
+
+// admin
+
+$('#photo').live('mousedown', function(e) {
+  if ($("#resizable")) $("#resizable").remove();
+
+  $('#photowrap').append('<div id="resizable" class="ui-widget-content"><h3 class="ui-widget-header">Resizable</h3></div>');
+  
+  $("#resizable").resizable({
+    aspectRatio: 1/1,
+    containment: 'parent',
+  });
+  
+  $("#resizable").draggable({
+    containment: 'parent',
+  });
+  
+  $("#resizable").css({ position: 'absolute', left: e.layerX, top: e.layerY, width: 100, height: 100 });
+});
