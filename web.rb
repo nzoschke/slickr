@@ -30,9 +30,10 @@ end
 
 get '/thumb' do
   begin
+    file = fs.open(params[:url], 'r')
     cache_control :public, :max_age => 3600
-    content_type "image/jpeg"
-    return fs.open(params[:url], 'r').read
+    content_type file.content_type
+    file.read
   rescue Mongo::GridFileNotFound
     redirect params[:url]
   end
