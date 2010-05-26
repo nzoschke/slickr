@@ -4,24 +4,30 @@ get '/' do
   erb :index
 end
 
-get '/thumber' do
-  # GET http://farm3.static.flickr.com/2786/4320860818_93e359bcdb.jpg, and thumbnail it
-  img = Magick::Image::from_blob(http_get(params[:photo_url]).body).first
-  img.crop!(110, 20, 150, 150)
+get '/auth' do
+  protected!
+  redirect '/'
+end
+
+post '/thumb' do
+  # GET http://farm3.static.flickr.com/2786/4320860818_93e359bcdb.jpg, and square thumbnail it from rubberband selection
+  photo_url = URI.extract(params[:photo_url]).first # might have /thumb?url= prepended...
+  img = Magick::Image::from_blob(http_get(photo_url).body).first
+  img.crop!(params[:x].to_i, params[:y].to_i, params[:width].to_i, params[:width].to_i)
   img.resize!(75, 75)
   
   # store in GridFS
-  thumb_url = params[:photo_url].gsub(/\.jpg/, "_s.jpg")
+  thumb_url = photo_url.gsub(/\.jpg/, "_s.jpg")
   fs.open(thumb_url, 'w', :content_type => 'application/jpg') { |f| f.write img.to_blob }
-  redirect "/thumb?thumb_url=#{thumb_url}"
+  redirect "/thumb?url=#{thumb_url}"
 end
 
 get '/thumb' do
-  content_type "image/jpeg"
   begin
-    return fs.open(params[:thumb_url], 'r').read
+    content_type "image/jpeg"
+    return fs.open(params[:url], 'r').read
   rescue Mongo::GridFileNotFound
-    redirect params[:thumb_url]
+    redirect params[:url]
   end
 end
 
@@ -34,6 +40,7 @@ helpers do
   end
   
   def fs
+    Mongo::Grid.new(db)
     @fs ||= Mongo::GridFileSystem.new(db)
   end
   
@@ -49,5 +56,17 @@ helpers do
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Get.new(uri.request_uri)
     http.request(request)
+  end
+  
+  def protected!
+    unless authorized?
+      response['WWW-Authenticate'] = %(Basic realm="Slickr Auth")
+      throw(:halt, [401, "Not authorized\n"])
+    end
+  end
+
+  def authorized?
+    @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+    @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['admin', 'admin']
   end
 end
