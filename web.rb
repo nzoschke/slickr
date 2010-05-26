@@ -24,6 +24,7 @@ end
 
 get '/thumb' do
   begin
+    cache_control :public, :max_age => 604800 # one week
     expires 0, :no_cache, :must_revalidate if authorized?
     content_type "image/jpeg"
     return fs.open(params[:url], 'r').read

@@ -2,13 +2,16 @@
  "http://www.w3.org/TR/html4/strict.dtd">
 <html>
   <head>
-    <title><%= SITE['title'] %></title>
+    <title><%= SITE['title'] %><%= " ADMIN" if authorized? %></title>
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" />
-    <link rel="stylesheet" type="text/css" href="/jquery-ui-1.8.1.custom.css" />
     <link rel="stylesheet" type="text/css" href="/main.css" />
-    <script type="text/javascript" src="/jquery-1.4.2.min.js"></script> 
-    <script type="text/javascript" src="/jquery-ui.min.js"></script> 
-    <script type="text/javascript" src="/gallery.js"></script>     
+    <script type="text/javascript" src="/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/gallery.js"></script>
+    <% if authorized? %>
+      <link rel="stylesheet" type="text/css" href="/jquery-ui-1.8.1.custom.css" />
+      <script type="text/javascript" src="/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="/admin.js"></script>
+    <% end %>
   </head>
   <body>
     <div id="doc" class="yui-t4">
