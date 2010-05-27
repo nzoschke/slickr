@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/mongo'
 
 get '/' do
   erb :index
