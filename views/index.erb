@@ -29,7 +29,7 @@
       	      <div id="gallery">
         	      <div id="photowrap">
         	        <div id="photo">
-        	          <% if SITEMAP %>
+        	          <% if SITE['map'] %>
         	          <% else %>
         	            <img src="http://farm4.static.flickr.com/3110/3236761506_a0f860d7c7.jpg" />
         	          <% end %>
@@ -43,7 +43,7 @@
 
     	  <div class="yui-b">
     	    <!-- YOUR NAVIGATION GOES HERE -->
-    	    <%= @map = SITEMAP ; erb(:sitemap, :layout => false) %>
+    	    <%= @map = SITE['map'] ; erb(:sitemap, :layout => false) %>
     	  </div>
     	</div>
     	
