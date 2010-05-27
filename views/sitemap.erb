@@ -1,18 +1,20 @@
 <ul class="nav">
 <% @map.each do |k,v| %>
-  <% if v.is_a? BSON::OrderedHash %>
-    <li>
-      <%= k %>
-      <%= @map = v ; erb(:sitemap, :layout => false) %>
-    </li>
-  <% elsif v.is_a? Hash and v.has_key? :set_url %>
-    <li>
-      <% if v[:set_url]%>
-        <a href="<%= v[:set_url] %>" feed="<%= feed_url(v[:set_url]) %>"><%= k %></a>
-      <% else %>
+  <% if v.is_a? Hash %>
+    <% if v.has_key? 'set_url' %>
+      <li>
+        <% if v['set_url']%>
+          <a href="<%= v['set_url'] %>" feed="<%= feed_url(v['set_url']) %>"><%= k %></a>
+        <% else %>
+          <%= k %>
+        <% end %>
+      </li>
+    <% else %>
+      <li>
         <%= k %>
-      <% end %>
-    </li>
+        <%= @map = v ; erb(:sitemap, :layout => false) %>
+      </li>
+    <% end %>
   <% else %>
     <li>
       <a href="<%= v %>"><%= k %></a>

@@ -19,19 +19,19 @@ post '/thumb' do
   img.resize!(75, 75)
   
   # store in GridFS
-  fs.open(thumb_url(params[:photo_url]), 'w', :content_type => 'application/jpg') { |f| f.write img.to_blob }
+  gfs.open(thumb_url(params[:photo_url]), 'w', :content_type => 'application/jpg') { |f| f.write img.to_blob }
   redirect "/thumb?url=#{thumb_url(params[:photo_url])}"
 end
 
 delete '/thumb' do
   protected!
-  fs.delete(thumb_url(params[:photo_url]))
+  gfs.delete(thumb_url(params[:photo_url]))
   return 'ok'
 end
 
 get '/thumb' do
   begin
-    file = fs.open(params[:url], 'r')
+    file = gfs.open(params[:url], 'r')
     cache_control :public, :max_age => 3600
     content_type file.content_type
     file.read
@@ -41,18 +41,6 @@ get '/thumb' do
 end
 
 helpers do
-  def db
-    uri = URI.parse(ENV['MONGO_URL'])
-    @db ||= Mongo::Connection.new(uri.host, uri.port).db(uri.path.slice(1..-1))
-    @db.authenticate(uri.user, uri.password)
-    @db
-  end
-  
-  def fs
-    Mongo::Grid.new(db)
-    @fs ||= Mongo::GridFileSystem.new(db)
-  end
-  
   def feed_url(set_url)
     # http://www.flickr.com/photos/7243296@N02/sets/72157623199241973/ =>
     # http://api.flickr.com/services/feeds/photoset.gne?set=72157623199241973&nsid=7243296@N02&lang=en-us&format=json&jsoncallback=?
