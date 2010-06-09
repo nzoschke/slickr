@@ -9,6 +9,7 @@ require 'mongo'
 require 'net/http'
 require 'RMagick'
 require 'uri'
+require 'open-uri'
 
 require 'sinatra'
 require 'sinatra/mongo'

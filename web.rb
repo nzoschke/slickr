@@ -14,7 +14,7 @@ post '/thumb' do
   protected!
 
   # GET http://farm3.static.flickr.com/2786/4320860818_93e359bcdb.jpg, and square thumbnail it from rubberband selection
-  img = Magick::Image::from_blob(http_get(params[:photo_url]).body).first
+  img = Magick::Image::from_blob(open(params[:photo_url]).read).first
   img.crop!(params[:x].to_i, params[:y].to_i, params[:width].to_i, params[:width].to_i)
   img.resize!(75, 75)
   
@@ -53,13 +53,6 @@ helpers do
     photo_url.gsub(/(_[a-z])?\.jpg$/, '_s.jpg')
   end
 
-  def http_get(url)
-    uri = URI.parse(url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Get.new(uri.request_uri)
-    http.request(request)
-  end
-  
   def protected!
     unless authorized?
       response['WWW-Authenticate'] = %(Basic realm="Slickr Auth")
